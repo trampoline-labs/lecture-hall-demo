@@ -6,7 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "npx prettier --write .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{css,scss,md,html,json}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "next": "13.5.4",
@@ -20,6 +31,8 @@
     "autoprefixer": "^10",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.0.1",
     "postcss": "^8",
     "prettier": "^3.0.3",
     "tailwindcss": "^3",
