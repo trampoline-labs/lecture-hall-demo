@@ -3,6 +3,4 @@
 
 echo "Formatting your project..."
 
-npx prettier --write .
-
-npx eslint --fix .
+npx lint-staged
