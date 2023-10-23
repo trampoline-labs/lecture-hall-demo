@@ -20,6 +20,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { signIn } from "next-auth/react";
+
+// Credentials
+// email: test@test.com, password: testing
 
 const formSchema = z
   .object({
@@ -50,6 +56,10 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       email: "",
@@ -58,8 +68,27 @@ function LoginForm() {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        callbackUrl,
+        redirect: false,
+      });
+
+      if (!res?.error) {
+        router.replace(callbackUrl);
+      } else {
+        toast({
+          title: "Credentials Error",
+          description: "Invalid email or password",
+        });
+      }
+    } catch (error) {
+      toast({ title: "Oops!", description: "Something went wrong" });
+      console.log(error);
+    }
   }
 
   return (
