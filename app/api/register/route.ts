@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
         status: "error",
         message: error.message,
       }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
