@@ -32,10 +32,7 @@ const formSchema = z
     email: z
       .string({ required_error: "Enter your email" })
       .email({ message: "Enter a valid email address" }),
-    password: z
-      .string({ required_error: "Enter your password" })
-      .min(6)
-      .max(10),
+    password: z.string({ required_error: "Enter your password" }).min(6),
   })
   .required();
 
@@ -59,7 +56,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       email: "",
