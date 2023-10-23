@@ -1,3 +1,6 @@
-// export { default } from "next-auth/middleware";
+export { default } from "next-auth/middleware";
 
-export default function () {}
+// export default function () {}
+export const config = {
+  matcher: ["/"],
+};
