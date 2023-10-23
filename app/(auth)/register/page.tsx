@@ -20,6 +20,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { signIn } from "next-auth/react";
 
 const formSchema = z
   .object({
@@ -32,8 +34,7 @@ const formSchema = z
       .max(10),
     confirm_password: z
       .string({ required_error: "Confirm your password" })
-      .min(6)
-      .max(10),
+      .min(6),
   })
   .required()
   .refine((data) => data.password === data.confirm_password, {
@@ -66,9 +67,34 @@ function RegisterForm() {
     },
     resolver: zodResolver(formSchema),
   });
+  const { toast } = useToast();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { email, password } = values;
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      // TODO: add loading state to disable button when data fetching
+
+      if (!res.ok) {
+        toast({ title: "Oops!", description: (await res.json()).message });
+        return;
+      }
+
+      signIn(undefined, { callbackUrl: "/dashboard" });
+    } catch (error) {
+      toast({
+        title: "Oops!",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
