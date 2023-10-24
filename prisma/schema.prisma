@@ -61,6 +61,7 @@ model Reservation {
   id            String      @id @default(cuid())
   name          String?
   date          DateTime
+  duration      Int
   userId        String
   status        String
   description   String?
