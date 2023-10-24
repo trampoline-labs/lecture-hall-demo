@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 const formSchema = z
   .object({
@@ -59,6 +60,8 @@ export default function RegisterPage() {
 }
 
 function RegisterForm() {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       email: "",
@@ -67,11 +70,11 @@ function RegisterForm() {
     },
     resolver: zodResolver(formSchema),
   });
-  const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { email, password } = values;
     try {
+      setLoading(true);
       const res = await fetch("/api/register", {
         method: "POST",
         body: JSON.stringify({ email, password }),
@@ -80,17 +83,20 @@ function RegisterForm() {
         },
       });
 
-      // TODO: add loading state to disable button when data fetching
-
+      setLoading(false);
       if (!res.ok) {
-        toast({ title: "Oops!", description: (await res.json()).message });
+        toast({
+          title: "Invalid Credentials",
+          description: "Email probably already exists",
+        });
         return;
       }
 
       signIn(undefined, { callbackUrl: "/dashboard" });
     } catch (error) {
+      setLoading(false);
       toast({
-        title: "Oops!",
+        title: "Server Error",
         description: "Something went wrong",
         variant: "destructive",
       });
@@ -141,7 +147,7 @@ function RegisterForm() {
             )}
           />
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full" disabled={loading}>
             Submit
           </Button>
         </form>
