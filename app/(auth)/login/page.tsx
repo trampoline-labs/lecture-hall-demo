@@ -25,8 +25,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-// testing lint-staged
-
 const formSchema = z
   .object({
     email: z
