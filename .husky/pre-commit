@@ -3,6 +3,4 @@
 
 echo "Formatting your project..."
 
-npm run format
-
-npx eslint --fix .
+npx lint-staged
