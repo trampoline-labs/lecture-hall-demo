@@ -74,7 +74,7 @@ function Hall({
     <Card className="w-fit">
       <CardHeader>
         <CardTitle className="flex justify-between">
-          <Link href={`/admin/edit/${id}`}>{name}</Link>
+          <Link href={`/admin/${id}`}>{name}</Link>
           <DeleteButton id={id}>
             <Button variant="destructive">Delete</Button>
           </DeleteButton>
