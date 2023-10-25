@@ -19,58 +19,47 @@ import { setMinutes } from "date-fns";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import { formSchema } from "./new-hall-form";
 
-export const formSchema = z
-  .object({
-    name: z.string({ required_error: "Enter the name of this hall" }),
-    capacity: z.coerce.number({
-      required_error: "Specify the capacity this hall can take",
-    }),
-    location: z.string({
-      required_error: "Specify where this hall is located",
-    }),
-    // TODO: could be an enum
-    amenities: z.string(),
-    startTime: z.date({
-      required_error: "Start date-time for availability is required",
-    }),
-    endTime: z.date({
-      required_error: "End date-time for availability is required",
-    }),
-  })
-  .required();
+type EditHallFormProps = z.infer<typeof formSchema> & { id: string };
 
-// for testing, time availability is only for the current day
-
-export default function NewHallForm() {
-  const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
-  const [endDate, setEndDate] = useState(setMinutes(new Date(), 0));
+export default function EditHallForm({
+  name,
+  capacity,
+  amenities,
+  location,
+  startTime,
+  endTime,
+  id,
+}: EditHallFormProps) {
+  const [startDate, setStartDate] = useState(setMinutes(startTime, 0));
+  const [endDate, setEndDate] = useState(setMinutes(endTime, 0));
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
-      capacity: 50,
+      name,
+      capacity,
+      amenities,
+      location,
+      startTime,
+      endTime,
     },
     resolver: zodResolver(formSchema),
   });
   const { toast } = useToast();
   const router = useRouter();
 
-  function filterTime(time: Date) {
-    const selectedDate = new Date(time);
-    return startDate.getTime() < selectedDate.getTime();
-  }
-
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setLoading(true);
       const res = await fetch("/api/halls", {
-        method: "POST",
-        body: JSON.stringify(data),
+        method: "PATCH",
+        body: JSON.stringify({ ...data, id }),
       });
       if (res.ok) {
         toast({
-          title: "Creation Successful",
-          description: "New Hall Created Successfully",
+          title: "Update Successful",
+          description: "Hall Updated Successfully",
         });
         setLoading(false);
         router.refresh();
@@ -84,6 +73,11 @@ export default function NewHallForm() {
         variant: "destructive",
       });
     }
+  }
+
+  function filterTime(time: Date) {
+    const selectedDate = new Date(time);
+    return startDate.getTime() < selectedDate.getTime();
   }
 
   return (
@@ -123,7 +117,7 @@ export default function NewHallForm() {
               <FormItem>
                 <FormLabel>Hall Location:</FormLabel>
                 <FormControl>
-                  <Input placeholder="Buidling 24" type="text" {...field} />
+                  <Input placeholder="Building 24" type="text" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -202,7 +196,7 @@ export default function NewHallForm() {
           </div>
 
           <Button type="submit" disabled={loading}>
-            Create Hall
+            Update Hall Details
           </Button>
         </form>
       </Form>
