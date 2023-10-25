@@ -23,7 +23,7 @@ import { useState } from "react";
 const formSchema = z
   .object({
     name: z.string({ required_error: "Enter the name of this hall" }),
-    capacity: z.number({
+    capacity: z.coerce.number({
       required_error: "Specify the capacity this hall can take",
     }),
     location: z.string({
@@ -45,6 +45,7 @@ const formSchema = z
 export default function NewHallForm() {
   const [startDate, setStartDate] = useState(setMinutes(new Date(), 0));
   const [endDate, setEndDate] = useState(setMinutes(new Date(), 0));
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       capacity: 50,
@@ -61,6 +62,7 @@ export default function NewHallForm() {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
+      setLoading(true);
       const res = await fetch("/api/halls", {
         method: "POST",
         body: JSON.stringify(data),
@@ -70,9 +72,12 @@ export default function NewHallForm() {
           title: "Creation Successful",
           description: "New Hall Created Successfully",
         });
+        setLoading(false);
+        router.refresh();
         router.push("/admin");
       }
     } catch (error) {
+      setLoading(false);
       toast({
         title: "Error",
         description: "Something went wrong, Try again",
@@ -200,7 +205,9 @@ export default function NewHallForm() {
             />
           </div>
 
-          <Button type="submit">Create Hall</Button>
+          <Button type="submit" disabled={loading}>
+            Create Hall
+          </Button>
         </form>
       </Form>
     </div>

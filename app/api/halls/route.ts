@@ -24,3 +24,18 @@ export async function POST(req: NextRequest) {
     console.log(error);
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = (await req.json()) as { id: string };
+    await prisma.lectureHall.delete({
+      where: {
+        id,
+      },
+    });
+    return NextResponse.json({ message: "deleted" });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+  }
+}
