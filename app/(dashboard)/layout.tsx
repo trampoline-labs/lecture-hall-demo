@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "A lecture hall resevation system",
 };
 
-export default function RootLayout({
+export default function UserDashboardLayout({
   children,
 }: {
   children: React.ReactNode;
