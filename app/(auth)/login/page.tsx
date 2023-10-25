@@ -122,7 +122,9 @@ function LoginForm() {
           <Button type="submit" className="w-full">
             Submit
           </Button>
-          <a href="register" className="underline text-sm my-8 text-slate-700">Don't have an accoun? Sign Up</a>
+          <a href="register" className="underline text-sm my-8 text-slate-700">
+            Do not have an account? Sign Up
+          </a>
         </form>
       </Form>
     </div>

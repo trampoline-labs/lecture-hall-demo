@@ -144,7 +144,12 @@ function RegisterForm() {
           <Button type="submit" className="w-full">
             Submit
           </Button>
-          <a href="/login" className="underline text-sm my-8 mx-3 text-slate-700">Have an accoun? Login</a>
+          <a
+            href="/login"
+            className="underline text-sm my-8 mx-3 text-slate-700"
+          >
+            Have an account? Login
+          </a>
         </form>
       </Form>
     </div>
