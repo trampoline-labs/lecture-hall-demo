@@ -58,35 +58,36 @@ model VerificationToken {
 }
 
 model Reservation {
-  id            String        @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  session       AvailableTime @relation(fields: [sessionId], references: [id])
-  sessionId     String
+  startTime     DateTime
+  endTime       DateTime
   userId        String
   status        String
   description   String?
   lectureHallId String
-  lectureHall   LectureHall   @relation(fields: [lectureHallId], references: [id], onDelete: Cascade)
-  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lectureHall   LectureHall @relation(fields: [lectureHallId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model LectureHall {
-  id             String          @id @default(cuid())
-  name           String?
-  capacity       Int // number of people it can fit
-  location       String? // e.g, building name, room number
-  amenities      String? // e.g, audio-visual equipment, whiteboards etc.
+  id          String        @id @default(cuid())
+  name        String?
+  capacity    Int // number of people it can fit
+  location    String? // e.g, building name, room number
+  amenities   String? // e.g, audio-visual equipment, whiteboards etc.
+  startTime   DateTime // Start time when the lecture hall is available
+  endTime     DateTime // End time when the lecture hall is available
+  Reservation Reservation[]
   // available   Boolean? // Indicates whether the hall is currently available
-  availableTimes AvailableTime[]
-  Reservation    Reservation[]
 }
 
-model AvailableTime {
-  id            String        @id @default(cuid())
-  startTime     DateTime
-  endTime       DateTime
-  lectureHall   LectureHall   @relation(fields: [lectureHallId], references: [id])
-  lectureHallId String
-  Reservation   Reservation[]
-  isReserved    Boolean       @default(false) // Indicates whether the time slot is reserved
-}
+// model AvailableTime {
+//   id            String        @id @default(cuid())
+//   startTime     DateTime
+//   endTime       DateTime
+//   lectureHall   LectureHall   @relation(fields: [lectureHallId], references: [id])
+//   lectureHallId String
+//   Reservation   Reservation[]
+//   isReserved    Boolean       @default(false) // Indicates whether the time slot is reserved
+// }
