@@ -24,6 +24,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import Link from "next/link";
 
 const formSchema = z
   .object({
@@ -124,9 +125,12 @@ function LoginForm() {
           <Button type="submit" className="w-full" disabled={loading}>
             Submit
           </Button>
-          <a href="register" className="underline text-sm my-8 text-slate-700">
+          <Link
+            href="/register"
+            className="underline text-sm my-8 text-slate-700"
+          >
             Do not have an account? Sign Up
-          </a>
+          </Link>
         </form>
       </Form>
     </div>

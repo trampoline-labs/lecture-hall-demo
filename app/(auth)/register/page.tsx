@@ -4,6 +4,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Form,
   FormControl,
@@ -150,12 +151,12 @@ function RegisterForm() {
           <Button type="submit" className="w-full" disabled={loading}>
             Submit
           </Button>
-          <a
+          <Link
             href="/login"
             className="underline text-sm my-8 mx-3 text-slate-700"
           >
             Have an account? Login
-          </a>
+          </Link>
         </form>
       </Form>
     </div>
