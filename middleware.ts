@@ -26,7 +26,7 @@ export default withAuth(
       }
 
       return NextResponse.redirect(
-        new URL(`/login?from=${encodeURIComponent(from)}`, req.url),
+        new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
       );
     }
   },
@@ -36,9 +36,9 @@ export default withAuth(
         return true;
       },
     },
-  },
+  }
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/register"],
+  matcher: ["/dashboard/:path*", "/login", "/register", "/admin"],
 };
