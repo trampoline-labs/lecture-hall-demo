@@ -3,6 +3,24 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
 type Hall = Prisma.LectureHallCreateWithoutReservationInput;
+export type StrippedHall = Pick<Hall, "id" | "name" | "startTime" | "endTime">;
+
+export async function GET(req: NextRequest) {
+  try {
+    const halls = await prisma.lectureHall.findMany({
+      select: {
+        name: true,
+        id: true,
+        startTime: true,
+        endTime: true,
+      },
+    });
+
+    return NextResponse.json(halls);
+  } catch (error) {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
