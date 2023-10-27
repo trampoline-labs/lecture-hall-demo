@@ -66,7 +66,7 @@ export default function CreateReservation({
 }) {
   const { data, isLoading } = useSWR<StrippedHall[], Error>(
     "/api/halls",
-    fetcher
+    fetcher,
   );
   const { data: session } = useSession();
   const [startTime, setStartTime] = useState(setMinutes(new Date(), 0));

@@ -3,4 +3,4 @@
 
 echo "Formatting your project..."
 
-npm run format
+npx lint-staged

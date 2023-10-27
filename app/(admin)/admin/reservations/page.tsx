@@ -56,7 +56,7 @@ export default async function AdminReservations() {
               <TableCell>{reservation.lectureHall.name}</TableCell>
               <TableCell>{`${format(reservation.startTime, "p")} - ${format(
                 reservation.endTime,
-                "p"
+                "p",
               )}`}</TableCell>
               <TableCell className="text-right">{reservation.status}</TableCell>
               <TableCell className="text-right">
