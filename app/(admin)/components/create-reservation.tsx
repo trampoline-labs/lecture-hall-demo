@@ -2,7 +2,6 @@
 
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -67,11 +66,13 @@ export default function CreateReservation({
 }) {
   const { data, isLoading } = useSWR<StrippedHall[], Error>(
     "/api/halls",
-    fetcher,
+    fetcher
   );
   const { data: session } = useSession();
   const [startTime, setStartTime] = useState(setMinutes(new Date(), 0));
   const [endTime, setEndTime] = useState(setMinutes(new Date(), 0));
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
   function filterTime(time: Date) {
     const selectedDate = new Date(time);
@@ -94,6 +95,7 @@ export default function CreateReservation({
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
+      setLoading(true);
       const res = await fetch("/api/reservations", {
         method: "POST",
         body: JSON.stringify({
@@ -102,7 +104,9 @@ export default function CreateReservation({
           userId: session!.user?.id,
         }),
       });
+      setLoading(false);
       if (res.ok) {
+        setOpen(false);
         toast({
           title: "Creation Successful",
           description: "New Reservation Created Successfully",
@@ -110,6 +114,7 @@ export default function CreateReservation({
         router.refresh();
       }
     } catch (error) {
+      setLoading(false);
       toast({
         title: "Error",
         description: "Something went wrong, Try again",
@@ -123,7 +128,7 @@ export default function CreateReservation({
   });
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={(open) => setOpen(open)}>
       <SheetTrigger>{children}</SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -218,9 +223,9 @@ export default function CreateReservation({
               )}
             />
 
-            <SheetClose asChild>
-              <Button type="submit">Create reservation</Button>
-            </SheetClose>
+            <Button type="submit" disabled={loading}>
+              Create reservation
+            </Button>
           </form>
         </Form>
       </SheetContent>

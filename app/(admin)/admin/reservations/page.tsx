@@ -54,14 +54,13 @@ export default async function AdminReservations() {
                 {reservation.user.email}
               </TableCell>
               <TableCell>{reservation.lectureHall.name}</TableCell>
-              <TableCell>{`${format(reservation.startTime, "p")} ${format(
+              <TableCell>{`${format(reservation.startTime, "p")} - ${format(
                 reservation.endTime,
-                "p",
+                "p"
               )}`}</TableCell>
               <TableCell className="text-right">{reservation.status}</TableCell>
               <TableCell className="text-right">
                 <div className="space-x-4">
-                  <Button variant="secondary">Cancel</Button>
                   <Button variant="destructive">Delete</Button>
                 </div>
               </TableCell>
