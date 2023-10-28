@@ -3,7 +3,7 @@
 import { signOut } from "next-auth/react";
 import { AdminHeader } from "../components/header";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 import {
   Table,
@@ -67,13 +67,7 @@ export default function Dashboard() {
         heading="Dashboard"
         text="Welcome to your Dashboard, Dear User."
       >
-        <Link
-          href=""
-          className={buttonVariants({ variant: "outline" })}
-          onClick={() => signOut()}
-        >
-          Logout
-        </Link>
+        <Button onClick={() => signOut()}>Logout</Button>
       </AdminHeader>
       <div className="mt-8">
         <p>

@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const paths = {
   halls: "/admin",
@@ -33,6 +35,10 @@ export default function AdminNav() {
       >
         Reservations
       </Link>
+
+      <Button variant="secondary" onClick={() => signOut()} className="mt-40">
+        Logout
+      </Button>
     </nav>
   );
 }

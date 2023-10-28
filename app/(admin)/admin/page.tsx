@@ -15,8 +15,6 @@ import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 import DeleteButton from "../components/delete-dialog";
 
-// TODO: Create the loading file for skeleton loaders while fetching
-
 export default async function AdminHome() {
   const halls = await prisma.lectureHall.findMany();
 

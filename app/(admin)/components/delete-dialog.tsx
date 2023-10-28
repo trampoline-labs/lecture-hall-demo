@@ -25,6 +25,9 @@ export default function DeleteButton({
   const { toast } = useToast();
   const router = useRouter();
 
+  // TODO: Make this component re-usable
+
+  // TODO: this function should be passes as props
   async function handleClick() {
     try {
       const res = await fetch("/api/halls", {
@@ -44,6 +47,8 @@ export default function DeleteButton({
     }
   }
 
+  // TODO: prompt messages should be passed as props
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -53,7 +58,7 @@ export default function DeleteButton({
             Are you sure you want to delete this hall?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone
+            All reservations made for this hall will be cleared!
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
