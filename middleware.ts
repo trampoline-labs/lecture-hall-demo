@@ -1,50 +1,30 @@
 import { withAuth } from "next-auth/middleware";
-import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
-// export { default } from "next-auth/middleware";
 
 export default withAuth(
   async function middleware(req) {
-    const token = await getToken({ req });
-    const isAuth = !!token;
-    const isAuthPage =
-      req.nextUrl.pathname.startsWith("/login") ||
-      req.nextUrl.pathname.startsWith("/register");
-
-    if (isAuthPage) {
-      if (isAuth) {
-        return NextResponse.redirect(new URL("/dashboard", req.url));
-      }
-
-      return null;
+    if (
+      req.nextUrl.pathname.startsWith("/admin") &&
+      req.nextauth.token?.role !== "admin"
+    ) {
+      return NextResponse.rewrite(new URL("/denied", req.url));
     }
 
-    if (!isAuth) {
-      let from = req.nextUrl.pathname;
-      if (req.nextUrl.search) {
-        from += req.nextUrl.search;
-      }
-
-      return NextResponse.redirect(
-        new URL(`/login?from=${encodeURIComponent(from)}`, req.url),
-      );
-    }
+    return NextResponse.next();
   },
   {
     callbacks: {
-      async authorized() {
-        return true;
+      // the middleware fn above will only run when this returns true
+      // if this returns false, user will be sent to the login page
+      authorized({ token }) {
+        // this is saying before a user can visit the pages in matcher
+        // he at least needs to be logged in, then we can talk further in the middleware fn above
+        return !!token;
       },
     },
-  },
+  }
 );
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/login",
-    "/register",
-    "/admin",
-    "/admin/:path*",
-  ],
+  matcher: ["/dashboard/:path*", "/admin", "/admin/:path*"],
 };

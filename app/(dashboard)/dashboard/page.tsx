@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { AdminHeader } from "../components/header";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 import {
   Table,
@@ -14,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 const invoices = [
   {
@@ -61,13 +63,25 @@ const invoices = [
 ];
 
 export default function Dashboard() {
+  const { data: session } = useSession();
+
   return (
     <div className="w-full">
       <AdminHeader
         heading="Dashboard"
         text="Welcome to your Dashboard, Dear User."
       >
-        <Button onClick={() => signOut()}>Logout</Button>
+        <div className="space-x-6">
+          {session?.user.role === "admin" && (
+            <Link
+              href="/admin"
+              className={cn(buttonVariants({ variant: "link" }), "capitalize")}
+            >
+              admin panel
+            </Link>
+          )}
+          <Button onClick={() => signOut()}>Logout</Button>
+        </div>
       </AdminHeader>
       <div className="mt-8">
         <p>
