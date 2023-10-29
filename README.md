@@ -34,6 +34,8 @@ npm run dev
 
 ## Test Credentials
 
-Email: `test@test.com`
+### Admin
 
-Password: `testing`
+Email: `admin@test.com`
+
+Password: `admin`
