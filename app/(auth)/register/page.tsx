@@ -30,13 +30,8 @@ const formSchema = z
     email: z
       .string({ required_error: "Enter your email" })
       .email({ message: "Enter a valid email address" }),
-    password: z
-      .string({ required_error: "Enter your password" })
-      .min(6)
-      .max(10),
-    confirm_password: z
-      .string({ required_error: "Confirm your password" })
-      .min(6),
+    password: z.string({ required_error: "Enter your password" }),
+    confirm_password: z.string({ required_error: "Confirm your password" }),
   })
   .required()
   .refine((data) => data.password === data.confirm_password, {

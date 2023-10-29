@@ -31,7 +31,7 @@ const formSchema = z
     email: z
       .string({ required_error: "Enter your email" })
       .email({ message: "Enter a valid email address" }),
-    password: z.string({ required_error: "Enter your password" }).min(6),
+    password: z.string({ required_error: "Enter your password" }),
   })
   .required();
 
@@ -75,8 +75,9 @@ function LoginForm() {
         redirect: false,
       });
 
-      setLoading(false);
       if (!res?.error) {
+        // workaround for router not activating redirect immediately
+        router.refresh();
         router.replace(callbackUrl);
       } else {
         toast({
@@ -84,6 +85,7 @@ function LoginForm() {
           description: "Invalid email or password",
         });
       }
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       toast({ title: "Oops!", description: "Something went wrong" });
