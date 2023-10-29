@@ -1,19 +1,9 @@
 import { AdminHeader } from "../components/header";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import { Hall } from "../components/hall";
 import { format } from "date-fns";
-import DeleteButton from "../components/delete-dialog";
 
 export default async function AdminHome() {
   const halls = await prisma.lectureHall.findMany();
@@ -46,51 +36,5 @@ export default async function AdminHome() {
         })}
       </div>
     </div>
-  );
-}
-
-interface HallProps {
-  id: string;
-  name: string;
-  location: string;
-  capacity: number;
-  amenities: string;
-  from: string;
-  to: string;
-}
-
-function Hall({
-  id,
-  name,
-  location,
-  capacity,
-  amenities,
-  from,
-  to,
-}: HallProps) {
-  return (
-    <Card className="w-fit">
-      <CardHeader>
-        <CardTitle className="flex justify-between">
-          <Link href={`/admin/${id}`}>{name}</Link>
-          <DeleteButton id={id}>
-            <Button variant="destructive">Delete</Button>
-          </DeleteButton>
-        </CardTitle>
-        <CardDescription>{location}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ul>
-          <li>capacity: {capacity}</li>
-          <li>amenities: {amenities}</li>
-        </ul>
-      </CardContent>
-      <CardFooter>
-        <p>
-          Available from:
-          <span>{from}</span> to <span>{to}</span>
-        </p>
-      </CardFooter>
-    </Card>
   );
 }
