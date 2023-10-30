@@ -36,14 +36,16 @@ interface CreateReservationProps {
   children: React.ReactNode;
 }
 
-const formSchema = z.object({
-  startTime: z.date({
-    required_error: "Please enter a start-time for your reservation",
-  }),
-  endTime: z.date({
-    required_error: "Please enter an end-time for your reservation",
-  }),
-});
+const formSchema = z
+  .object({
+    startTime: z.date({
+      required_error: "Please enter a start-time for your reservation",
+    }),
+    endTime: z.date({
+      required_error: "Please enter an end-time for your reservation",
+    }),
+  })
+  .required();
 
 export default function CreateReservation({
   startTime,
