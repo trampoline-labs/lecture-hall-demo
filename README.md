@@ -39,3 +39,9 @@ npm run dev
 Email: `admin@test.com`
 
 Password: `admin`
+
+### User
+
+Email: `test@test.com`
+
+Password: `testing`
