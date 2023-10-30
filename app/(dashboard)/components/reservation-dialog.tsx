@@ -95,6 +95,7 @@ export default function CreateReservation({
         });
       }
       router.push("/dashboard");
+      router.refresh();
       setIsDialogOpen(false);
     } catch (error) {
       setLoading(false);
@@ -113,7 +114,7 @@ export default function CreateReservation({
         <DialogHeader>
           <DialogTitle>Make a Reservation</DialogTitle>
           <DialogDescription>
-            Make a reservation for {hallName}
+            Make a reservation for <span className="font-bold">{hallName}</span>
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
