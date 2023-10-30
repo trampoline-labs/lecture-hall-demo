@@ -29,7 +29,8 @@ const formSchema = z
   .object({
     email: z
       .string({ required_error: "Enter your email" })
-      .email({ message: "Enter a valid email address" }),
+      .email({ message: "Enter a valid email address" })
+      .toLowerCase(),
     password: z.string({ required_error: "Enter your password" }),
     confirm_password: z.string({ required_error: "Confirm your password" }),
   })
