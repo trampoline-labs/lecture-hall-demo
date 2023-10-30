@@ -1,10 +1,11 @@
-"use client";
-
-import { signOut } from "next-auth/react";
 import { AdminHeader } from "../components/header";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
+import { buttonVariants } from "@/components/ui/button";
+import LogoutButton from "../components/logout-button";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { prisma } from "@/lib/prisma";
+import { format } from "date-fns";
 
 import {
   Table,
@@ -62,8 +63,18 @@ const invoices = [
   },
 ];
 
-export default function Dashboard() {
-  const { data: session } = useSession();
+export default async function Dashboard() {
+  const session = await getServerSession(options);
+  const id = session?.user?.id;
+  const reservations = await prisma.reservation.findMany({
+    where: {
+      id,
+    },
+    include: {
+      lectureHall: true,
+    },
+  });
+  console.log(id);
 
   return (
     <div className="w-full">
@@ -80,7 +91,7 @@ export default function Dashboard() {
               admin panel
             </Link>
           )}
-          <Button onClick={() => signOut()}>Logout</Button>
+          <LogoutButton />
         </div>
       </AdminHeader>
       <div className="mt-8">
@@ -91,21 +102,24 @@ export default function Dashboard() {
       <Table className="mt-8">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="w-[100px]">Res. Num</TableHead>
+            <TableHead>Hall</TableHead>
+            <TableHead>Time</TableHead>
+            <TableHead className="text-right">Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">
-                {invoice.totalAmount}
-              </TableCell>
+          {reservations?.map((reservation, index) => (
+            <TableRow key={reservation.id}>
+              <TableCell className="font-medium">{index + 1}</TableCell>
+              <TableCell>{reservation.lectureHall.name}</TableCell>
+              <TableCell>{`${format(reservation.startTime, "p")} - ${format(
+                reservation.endTime,
+                "p",
+              )}`}</TableCell>
+              <TableCell className="text-right">{reservation.status}</TableCell>
+              <TableCell className="text-right"></TableCell>
             </TableRow>
           ))}
         </TableBody>
