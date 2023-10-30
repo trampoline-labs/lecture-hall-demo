@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
       data: {
         email: email.toLowerCase(),
         password: hashed_password,
+        role: "user",
       },
     });
 
