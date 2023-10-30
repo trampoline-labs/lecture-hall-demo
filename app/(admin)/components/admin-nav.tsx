@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 const paths = {
   halls: "/admin",
@@ -34,6 +35,13 @@ export default function AdminNav() {
         )}
       >
         Reservations
+      </Link>
+
+      <Link
+        href="/dashboard"
+        className={cn(buttonVariants({ variant: "link" }), "text-left")}
+      >
+        User Dashboard
       </Link>
 
       <Button variant="secondary" onClick={() => signOut()} className="mt-40">

@@ -1,10 +1,11 @@
-"use client";
-
-import { signOut } from "next-auth/react";
 import { AdminHeader } from "../components/header";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
+import { buttonVariants } from "@/components/ui/button";
+import LogoutButton from "../components/logout-button";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { prisma } from "@/lib/prisma";
+import { format } from "date-fns";
 
 import {
   Table,
@@ -17,53 +18,17 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
-export default function Dashboard() {
-  const { data: session } = useSession();
+export default async function Dashboard() {
+  const session = await getServerSession(options);
+  const id = session?.user?.id;
+  const reservations = await prisma.reservation.findMany({
+    where: {
+      userId: id,
+    },
+    include: {
+      lectureHall: true,
+    },
+  });
 
   return (
     <div className="w-full">
@@ -80,7 +45,7 @@ export default function Dashboard() {
               admin panel
             </Link>
           )}
-          <Button onClick={() => signOut()}>Logout</Button>
+          <LogoutButton />
         </div>
       </AdminHeader>
       <div className="mt-8">
@@ -91,21 +56,24 @@ export default function Dashboard() {
       <Table className="mt-8">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead className="w-[100px]">Res. Num</TableHead>
+            <TableHead>Hall</TableHead>
+            <TableHead>Time</TableHead>
+            <TableHead className="text-right">Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map((invoice) => (
-            <TableRow key={invoice.invoice}>
-              <TableCell className="font-medium">{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">
-                {invoice.totalAmount}
-              </TableCell>
+          {reservations?.map((reservation, index) => (
+            <TableRow key={reservation.id}>
+              <TableCell className="font-medium">{index + 1}</TableCell>
+              <TableCell>{reservation.lectureHall.name}</TableCell>
+              <TableCell>{`${format(reservation.startTime, "p")} - ${format(
+                reservation.endTime,
+                "p",
+              )}`}</TableCell>
+              <TableCell className="text-right">{reservation.status}</TableCell>
+              <TableCell className="text-right"></TableCell>
             </TableRow>
           ))}
         </TableBody>
