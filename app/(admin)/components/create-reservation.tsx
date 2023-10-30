@@ -41,10 +41,10 @@ const formSchema = z
   .object({
     hallId: z.string({ required_error: "Enter a hall" }),
     startTime: z.date({
-      required_error: "Start date-time for availability is required",
+      required_error: "Start time for availability is required",
     }),
     endTime: z.date({
-      required_error: "End date-time for availability is required",
+      required_error: "End time for availability is required",
     }),
   })
   .required();
