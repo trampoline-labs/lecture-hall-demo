@@ -22,7 +22,7 @@ async function main() {
     where: { email: "test@test.com" },
     update: {},
     create: {
-      email: "user@test.com",
+      email: "test@test.com",
       name: "testuser",
       password: userPass,
       role: "user",
