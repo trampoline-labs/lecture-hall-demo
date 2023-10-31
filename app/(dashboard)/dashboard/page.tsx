@@ -32,10 +32,7 @@ export default async function Dashboard() {
 
   return (
     <div className="w-full">
-      <AdminHeader
-        heading="Dashboard"
-        text={`Welcome to your Dashboard, ${session?.user.email}`}
-      >
+      <AdminHeader heading="Dashboard" text={session?.user.email}>
         <div className="space-x-6">
           {session?.user.role === "admin" && (
             <Link
