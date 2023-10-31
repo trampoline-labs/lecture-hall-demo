@@ -14,10 +14,14 @@ export default function ReservationsLayout({
   return (
     <section>
       <div className="w-full">
-        <AdminHeader
-          heading="Reservations"
-          text="Create and manage reservations"
-        />
+        <div className="flex items-center justify-between px-2">
+          <div className="grid gap-1">
+            <h1 className="font-bold text-3xl md:text-4xl">Reservations</h1>
+            <p className="text-lg text-foreground">
+              Create and manage your reservations
+            </p>
+          </div>
+        </div>
       </div>
       {children}
     </section>
