@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import DeleteReserve from "../components/delete-reserve";
 
 export default async function Dashboard() {
   const session = await getServerSession(options);
@@ -34,7 +35,7 @@ export default async function Dashboard() {
     <div className="w-full">
       <AdminHeader
         heading="Dashboard"
-        text="Welcome to your Dashboard, Dear User."
+        text={`Welcome to your Dashboard, ${session?.user?.email}`}
       >
         <div className="space-x-6">
           {session?.user.role === "admin" && (
@@ -48,11 +49,6 @@ export default async function Dashboard() {
           <LogoutButton />
         </div>
       </AdminHeader>
-      <div className="mt-8">
-        <p>
-          Email: <b>test@test.com</b>
-        </p>
-      </div>
       <Table className="mt-8">
         <TableHeader>
           <TableRow>
@@ -73,7 +69,9 @@ export default async function Dashboard() {
                 "p",
               )}`}</TableCell>
               <TableCell className="text-right">{reservation.status}</TableCell>
-              <TableCell className="text-right"></TableCell>
+              <TableCell className="text-right">
+                <DeleteReserve id={reservation.id} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
