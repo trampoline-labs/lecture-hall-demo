@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import DeleteDialog from "./delete-dialog";
+import DeleteDialog from "@/components/delete-dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
