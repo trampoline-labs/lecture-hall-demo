@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AdminHeader } from "../../components/header";
 
-export const metadat: Metadata = {
+export const metadata: Metadata = {
   title: "Reservations",
   description: "Manage reservations",
 };
