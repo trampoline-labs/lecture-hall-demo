@@ -10,7 +10,6 @@ import { format } from "date-fns";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -35,7 +34,7 @@ export default async function Dashboard() {
     <div className="w-full">
       <AdminHeader
         heading="Dashboard"
-        text={`Welcome to your Dashboard, ${session?.user?.email}`}
+        text={`Welcome to your Dashboard, ${session?.user.email}`}
       >
         <div className="space-x-6">
           {session?.user.role === "admin" && (
