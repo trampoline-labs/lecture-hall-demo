@@ -23,6 +23,9 @@ npx prisma migrate dev
 3. Run seed script:
 
 ```sh
+# the above command will always run the seed script after
+# if it doesn't you can run it manually like so
+
 npx prisma db seed
 ```
 
