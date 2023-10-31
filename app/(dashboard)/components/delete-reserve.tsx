@@ -1,11 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import DeleteDialog from "../components/delete-dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-
+import DeleteDialog from "@/components/delete-dialog";
 interface HallProps {
   id: string;
 }
