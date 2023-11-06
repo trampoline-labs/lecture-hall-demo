@@ -9,8 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "format": "npx prettier --write .",
-    "prepare": "husky install",
-    "postinstall": "prisma generate"
+    "prepare": "husky install"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
