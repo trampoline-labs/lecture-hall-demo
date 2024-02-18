@@ -3,8 +3,10 @@
 Proof of Concept application for a Lecture Hall reservation and management system.
 
 ## Features
-
-Check this link for now [Trello Board](https://trello.com/b/reFLr5yb/lecture-hall)
+- Reservation system
+- Admin Panel
+- User Dashboard
+- Authentication and Authorization
 
 ## Running Locally
 
